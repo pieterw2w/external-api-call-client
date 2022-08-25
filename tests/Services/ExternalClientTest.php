@@ -66,7 +66,7 @@ class ExternalClientTest extends TestCase implements LogHandlerContract
         );
     }
 
-    public function testPost()
+    public function testPost(): void
     {
         $input = new class () {
         };
@@ -99,7 +99,7 @@ class ExternalClientTest extends TestCase implements LogHandlerContract
         }
     }
 
-    public function testPatch()
+    public function testPatch(): void
     {
         $input = new class () {
         };

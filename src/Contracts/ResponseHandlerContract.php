@@ -13,7 +13,7 @@ interface ResponseHandlerContract
      * Parse a valid response and returns an object that comes from the response.
      *
      * @phpstan-template T
-     * @phpstan-param ExternalClientCall<T, mixed, mixed> $clientCall
+     * @phpstan-param ExternalClientCall<T, mixed, mixed> $externalClientCall
      *
      * @phpstan-return T
      */

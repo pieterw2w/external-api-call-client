@@ -17,7 +17,7 @@ class ErrorWithClientCallException extends RuntimeException
         ?ResponseInterface $response
     ) {
         $message = 'A problem occurred when calling an external API: "' . $throwable->getMessage();
-        $message .= '" state: ' . $state->__toString();
+        $message .= '" state: ' . $state->value;
         if ($request) {
             $message .= ', request: ' . $request->getUri();
         }

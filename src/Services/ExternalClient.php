@@ -11,10 +11,10 @@ use PaqtCom\ExternalApiCallClient\Contracts\LogHandlerContract;
 use PaqtCom\ExternalApiCallClient\Contracts\RequestFactoryContract;
 use PaqtCom\ExternalApiCallClient\Contracts\ResponseHandlerContract;
 use PaqtCom\ExternalApiCallClient\Mediators\ExternalClientCall;
+use Psr\Http\Message\RequestInterface;
 use ReflectionFunction;
 use ReflectionProperty;
 use Throwable;
-use ValueError;
 
 /**
  * Class that can be used directly or extended to make an API call in a logical, structured order.
@@ -58,8 +58,8 @@ class ExternalClient
      * @phpstan-template T
      * @phpstan-template U
      * @phpstan-template V
-     * @phpstan-param ExternalClientCall<T, U, V>
-     * @phpstan-param T
+     * @phpstan-param ExternalClientCall<T, U, V> $clientCall
+     * @phpstan-param T $input
      * @phpstan-return U|V
      */
     final public function post(ExternalClientCall $clientCall, mixed $input): mixed
@@ -75,8 +75,8 @@ class ExternalClient
      * @phpstan-template T
      * @phpstan-template U
      * @phpstan-template V
-     * @phpstan-param ExternalClientCall<T, U, V>
-     * @phpstan-param T
+     * @phpstan-param ExternalClientCall<T, U, V> $clientCall
+     * @phpstan-param T $input
      * @phpstan-return U|V
      */
     final public function patch(ExternalClientCall $clientCall, mixed $input): mixed
@@ -90,7 +90,7 @@ class ExternalClient
      * Does a GET call and returns the converted response.
      * @phpstan-template U
      * @phpstan-template V
-     * @phpstan-param ExternalClientCall<null, U, V>
+     * @phpstan-param ExternalClientCall<null, U, V> $clientCall
      * @phpstan-return U|V
      */
     final public function get(ExternalClientCall $clientCall): mixed
@@ -105,7 +105,8 @@ class ExternalClient
      * the same.
      * @phpstan-template T
      * @phpstan-template U
-     * @phpstan-param callable(ExternalClientCall<T,U,V>): RequestInterface $createCallback
+     * @phpstan-template V
+     * @phpstan-param callable(ExternalClientCall<T,U,V>, T=): RequestInterface $createCallback
      * @phpstan-param ExternalClientCall<T,U,V> $clientCall
      * @phpstan-param T $input
      *
@@ -160,6 +161,7 @@ class ExternalClient
         }
         $reflFunction = new ReflectionFunction($value);
 
-        return !str_ends_with($reflFunction->getFileName(), 'Handler/Proxy.php');
+        return $reflFunction->getFileName() !== false
+            && !str_ends_with($reflFunction->getFileName(), 'Handler/Proxy.php');
     }
 }

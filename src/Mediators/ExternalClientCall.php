@@ -153,6 +153,7 @@ final class ExternalClientCall
      * Sets the request and moves the state to HTTP_REQUEST.
      *
      * @phpstan-param T $input
+     * @phpstan-return ExternalClientCall<T, U, V>
      */
     public function setRequest(RequestInterface $request, bool $mocked, $input = null): self
     {
@@ -179,6 +180,8 @@ final class ExternalClientCall
 
     /**
      * Sets the response and moves the state to HANDLE_RESPONSE.
+     *
+     * @phpstan-return ExternalClientCall<T, U, V>
      */
     public function setResponse(ResponseInterface $response): self
     {
@@ -199,7 +202,8 @@ final class ExternalClientCall
     /**
      * Sets the deserialized result of the call and moves the state to RETURN_RESPONSE.
      *
-     * @phpstan-param U|null $result
+     * @phpstan-param U $result
+     * @phpstan-return ExternalClientCall<T, U, V>
      */
     public function setResult(mixed $result): self
     {
@@ -254,6 +258,7 @@ final class ExternalClientCall
      * The error handler returns a response and we store that.
      *
      * @phpstan-param V $errorResult
+     * @phpstan-return ExternalClientCall<T, U, V>
      */
     public function setErrorResult(mixed $errorResult): self
     {

@@ -12,7 +12,10 @@ use Symfony\Component\Mime\Exception\RuntimeException as MimeException;
 
 class ExternalClientCallTest extends TestCase
 {
-    public function testInitialState()
+    /**
+     * @phpstan-return ExternalClientCall<mixed, mixed, mixed>
+     */
+    public function testInitialState(): ExternalClientCall
     {
         $testItem = new ExternalClientCall(__CLASS__, 'https://example.com/', ExternalClientCall::class);
         $this->assertEquals(null, $testItem->getResponse());
@@ -31,8 +34,9 @@ class ExternalClientCallTest extends TestCase
 
     /**
      * @depends clone testInitialState
+     * @phpstan-param ExternalClientCall<mixed, mixed, mixed> $testItem
      */
-    public function testWrongMethodCall(ExternalClientCall $testItem)
+    public function testWrongMethodCall(ExternalClientCall $testItem): void
     {
         $this->expectException(RuntimeException::class);
         $testItem->setResult(1);
@@ -40,8 +44,10 @@ class ExternalClientCallTest extends TestCase
 
     /**
      * @depends clone testInitialState
+     * @phpstan-param ExternalClientCall<mixed, mixed, mixed> $testItem
+     * @phpstan-return ExternalClientCall<mixed, mixed, mixed>
      */
-    public function testErrorAfterInitialState(ExternalClientCall $testItem)
+    public function testErrorAfterInitialState(ExternalClientCall $testItem): ExternalClientCall
     {
         $exception = new MimeException('Mr. Mime', 1);
         $this->assertEquals(
@@ -68,8 +74,10 @@ class ExternalClientCallTest extends TestCase
 
     /**
      * @depends clone testInitialState
+     * @phpstan-param ExternalClientCall<mixed, mixed, mixed> $testItem
+     * @phpstan-return ExternalClientCall<mixed, mixed, mixed>
      */
-    public function testRequest(ExternalClientCall $testItem)
+    public function testRequest(ExternalClientCall $testItem): ExternalClientCall
     {
         $request = new Request('POST', '/channel/random', [], '{"user":"Pieter"}');
         $this->assertFalse($testItem->isMocked());
@@ -91,8 +99,10 @@ class ExternalClientCallTest extends TestCase
 
     /**
      * @depends clone testRequest
+     * @phpstan-param ExternalClientCall<mixed, mixed, mixed> $testItem
+     * @phpstan-return ExternalClientCall<mixed, mixed, mixed>
      */
-    public function testResponse(ExternalClientCall $testItem)
+    public function testResponse(ExternalClientCall $testItem): ExternalClientCall
     {
         $expectedRequest = $testItem->getRequest();
         $response = new Response(200, [], '{}');
@@ -113,8 +123,10 @@ class ExternalClientCallTest extends TestCase
 
     /**
      * @depends clone testResponse
+     * @phpstan-param ExternalClientCall<mixed, mixed, mixed> $testItem
+     * @phpstan-return ExternalClientCall<mixed, mixed, mixed>
      */
-    public function testResult(ExternalClientCall $testItem)
+    public function testResult(ExternalClientCall $testItem): ExternalClientCall
     {
         $expectedRequest = $testItem->getRequest();
         $expectedResponse = $testItem->getResponse();
